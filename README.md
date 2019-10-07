@@ -78,6 +78,8 @@ Macbook Pro 2019
 Processor 2,4 GHz Intel Core i5
 Memory 8 GB 2133 MHz LPDDR3
 
+Server Django and a reverse proxy Nginx in a Docker container.
+
 `apib -c 100 -d 60 @benchmark_get_url.txt`
 <pre>
 HTTP/1.1
