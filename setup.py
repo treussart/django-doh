@@ -1,9 +1,13 @@
 import os
+from os import path
 
 from setuptools import find_packages, setup
 
-with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
-    README = readme.read()
+here = path.abspath(path.dirname(__file__))
+
+# Get the long description from the README file
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
 
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
@@ -15,7 +19,7 @@ setup(
     include_package_data=True,
     license='BSD License',
     description='A simple Django app to serve DOH.',
-    long_description=README,
+    long_description=long_description,
     url='https://github.com/treussart/django-doh',
     author='Matthieu Treussart',
     author_email='matthieu@treussart.com',
