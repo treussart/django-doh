@@ -80,6 +80,7 @@ Memory 8 GB 2133 MHz LPDDR3
 
 `apib -c 100 -d 60 @benchmark_get_url.txt`
 <pre>
+HTTP/1.1
 Duration:             60.013 seconds
 Attempted requests:   6557
 Successful requests:  6557
