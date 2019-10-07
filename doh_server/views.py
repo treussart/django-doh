@@ -1,3 +1,5 @@
+import concurrent.futures
+
 import dns
 from django.conf import settings
 from django.http import HttpResponseNotAllowed, HttpResponseBadRequest
@@ -27,7 +29,9 @@ def doh_request(request):
     if not message:
         return HttpResponseBadRequest()
     try:
-        query_response = resolver_dns.resolve(message)
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            future = executor.submit(resolver_dns.resolve, message)
+            query_response = future.result()
         if isinstance(query_response, Message):
             if query_response.answer:
                 logger.debug("[DNS] " + str(query_response.answer[0]))
