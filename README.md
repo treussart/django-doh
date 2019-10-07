@@ -83,29 +83,29 @@ Server Django and a reverse proxy Nginx in a Docker container.
 `apib -c 100 -d 60 @benchmark_get_url.txt`
 <pre>
 HTTP/1.1
-Duration:             60.013 seconds
-Attempted requests:   6557
-Successful requests:  6557
+Duration:             60.032 seconds
+Attempted requests:   7911
+Successful requests:  7911
 Non-200 results:      0
-Connections opened:   100
+Connections opened:   104
 Socket errors:        0
 
-Throughput:           109.260 requests/second
-Average latency:      907.811 milliseconds
-Minimum latency:      52.990 milliseconds
-Maximum latency:      30740.255 milliseconds
-Latency std. dev:     1007.446 milliseconds
-50% latency:          784.627 milliseconds
-90% latency:          1409.109 milliseconds
-98% latency:          1870.297 milliseconds
-99% latency:          2083.914 milliseconds
+Throughput:           131.780 requests/second
+Average latency:      734.647 milliseconds
+Minimum latency:      27.760 milliseconds
+Maximum latency:      9819.022 milliseconds
+Latency std. dev:     710.929 milliseconds
+50% latency:          606.548 milliseconds
+90% latency:          1360.734 milliseconds
+98% latency:          2845.927 milliseconds
+99% latency:          3612.085 milliseconds
 
 Client CPU average:    0%
 Client CPU max:        0%
 Client memory usage:    0%
 
-Total bytes sent:      0.97 megabytes
-Total bytes received:  2.07 megabytes
-Send bandwidth:        0.13 megabits / second
-Receive bandwidth:     0.28 megabits / second
+Total bytes sent:      1.15 megabytes
+Total bytes received:  2.44 megabytes
+Send bandwidth:        0.15 megabits / second
+Receive bandwidth:     0.33 megabits / second
 </pre>
