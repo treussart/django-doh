@@ -1,0 +1,15 @@
+[run]
+branch = true
+source =
+    .
+omit =
+    **/tests/*
+    **/setup.py
+    **/runtests.py
+
+[report]
+
+omit =
+    **/tests/*
+    **/setup.py
+    **/runtests.py

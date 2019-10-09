@@ -63,10 +63,8 @@ def set_headers(
     response["authority"] = settings.DOH_SERVER["AUTHORITY"]
     response["method"] = request.method
     response["scheme"] = get_scheme(request)
-    ttl = 0
     if query_response.answer:
         ttl = min(r.ttl for r in query_response.answer)
-    if query_response.answer:
         response["cache-control"] = "max-age=" + str(ttl)
     return response
 
@@ -123,7 +121,7 @@ def create_http_json_response(request, query_response):
     if isinstance(query_response, Message):
         if query_response.answer:
             answers = []
-            for answer in query_response.answer[0]:
+            for answer in query_response.answer:
                 answers.append(str(answer))
             with open(
                 settings.BASE_DIR + "/doh_server/template.json", "r", encoding="UTF-8"
