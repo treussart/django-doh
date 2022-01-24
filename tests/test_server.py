@@ -101,54 +101,36 @@ class GetTestCaseDNSMessage(TestCase):
     def test_with_dns_answer(self):
         q = dns.message.make_query(qname="treussart.com", rdtype="A")
         data = q.to_wire()
-        with self.settings(DOH_SERVER={"RESOLVER": "internal", "AUTHORITY": ""}):
-            response = self.client.get(
-                reverse("doh_request"),
-                {"dns": doh_b64_encode(data)},
-                HTTP_ACCEPT=DOH_CONTENT_TYPE,
-            )
-            self.assertEqual(response.status_code, 200)
-            message_content = message.from_wire(response.content)
-            self.assertTrue(message_content.first)
-            self.assertEqual(message_content.rcode(), 0)
-            self.assertIn("treussart.com.", str(message_content.answer[0]))
-            self.assertIn(" IN A ", str(message_content.answer[0]))
-        with self.settings(DOH_SERVER={"RESOLVER": "8.8.8.8", "AUTHORITY": ""}):
-            response = self.client.get(
-                reverse("doh_request"),
-                {"dns": doh_b64_encode(data)},
-                HTTP_ACCEPT=DOH_CONTENT_TYPE,
-            )
-            self.assertEqual(response.status_code, 200)
-            message_content = message.from_wire(response.content)
-            self.assertTrue(message_content.first)
-            self.assertEqual(message_content.rcode(), 0)
-            self.assertIn("treussart.com.", str(message_content.answer[0]))
-            self.assertIn(" IN A ", str(message_content.answer[0]))
+        for resolver in ["internal", "8.8.8.8"]:
+            with self.subTest(resolver=resolver):
+                with self.settings(DOH_SERVER={"RESOLVER": resolver, "AUTHORITY": ""}):
+                    response = self.client.get(
+                        reverse("doh_request"),
+                        {"dns": doh_b64_encode(data)},
+                        HTTP_ACCEPT=DOH_CONTENT_TYPE,
+                    )
+                    self.assertEqual(response.status_code, 200)
+                    message_content = message.from_wire(response.content)
+                    self.assertTrue(message_content.first)
+                    self.assertEqual(message_content.rcode(), 0)
+                    self.assertIn("treussart.com.", str(message_content.answer[0]))
+                    self.assertIn(" IN A ", str(message_content.answer[0]))
 
     def test_without_dns_answer(self):
         q = dns.message.make_query(qname="test.local", rdtype="A")
         data = q.to_wire()
-        with self.settings(DOH_SERVER={"RESOLVER": "internal", "AUTHORITY": ""}):
-            response = self.client.get(
-                reverse("doh_request"),
-                {"dns": doh_b64_encode(data)},
-                HTTP_ACCEPT=DOH_CONTENT_TYPE,
-            )
-            self.assertEqual(response.status_code, 200)
-            message_content = dns.message.from_wire(response.content)
-            self.assertEqual(message_content.rcode(), 3)
-            self.assertFalse(message_content.answer)
-        with self.settings(DOH_SERVER={"RESOLVER": "8.8.8.8", "AUTHORITY": ""}):
-            response = self.client.get(
-                reverse("doh_request"),
-                {"dns": doh_b64_encode(data)},
-                HTTP_ACCEPT=DOH_CONTENT_TYPE,
-            )
-            self.assertEqual(response.status_code, 200)
-            message_content = dns.message.from_wire(response.content)
-            self.assertEqual(message_content.rcode(), 3)
-            self.assertFalse(message_content.answer)
+        for resolver in ["internal", "8.8.8.8"]:
+            with self.subTest(resolver=resolver):
+                with self.settings(DOH_SERVER={"RESOLVER": resolver, "AUTHORITY": ""}):
+                    response = self.client.get(
+                        reverse("doh_request"),
+                        {"dns": doh_b64_encode(data)},
+                        HTTP_ACCEPT=DOH_CONTENT_TYPE,
+                    )
+                    self.assertEqual(response.status_code, 200)
+                    message_content = dns.message.from_wire(response.content)
+                    self.assertEqual(message_content.rcode(), 3)
+                    self.assertFalse(message_content.answer)
 
 
 class GetTestCaseDNSJson(TestCase):
@@ -156,37 +138,25 @@ class GetTestCaseDNSJson(TestCase):
         self.client = Client()
 
     def test_ok_with_dns_answer(self):
-        with self.settings(DOH_SERVER={"RESOLVER": "internal", "AUTHORITY": ""}):
-            response = self.client.get(
-                reverse("doh_request"),
-                {"name": "treussart.com", "type": "A"},
-                HTTP_ACCEPT=DOH_JSON_CONTENT_TYPE,
-            )
-            self.assertEqual(response.status_code, 200)
-            self.assertIn("treussart.com.", response.content.decode("UTF-8"))
-        with self.settings(DOH_SERVER={"RESOLVER": "8.8.8.8", "AUTHORITY": ""}):
-            response = self.client.get(
-                reverse("doh_request"),
-                {"name": "treussart.com", "type": "A"},
-                HTTP_ACCEPT=DOH_JSON_CONTENT_TYPE,
-            )
-            self.assertEqual(response.status_code, 200)
-            self.assertIn("treussart.com.", response.content.decode("UTF-8"))
+        for resolver in ["internal", "8.8.8.8"]:
+            with self.subTest(resolver=resolver):
+                with self.settings(DOH_SERVER={"RESOLVER": resolver, "AUTHORITY": ""}):
+                    response = self.client.get(
+                        reverse("doh_request"),
+                        {"name": "treussart.com", "type": "A"},
+                        HTTP_ACCEPT=DOH_JSON_CONTENT_TYPE,
+                    )
+                    self.assertEqual(response.status_code, 200)
+                    self.assertIn("treussart.com.", response.content.decode("UTF-8"))
 
     def test_ok_without_dns_answer(self):
-        with self.settings(DOH_SERVER={"RESOLVER": "internal", "AUTHORITY": ""}):
-            response = self.client.get(
-                reverse("doh_request"),
-                {"name": "not_works", "type": "A"},
-                HTTP_ACCEPT=DOH_JSON_CONTENT_TYPE,
-            )
-            self.assertEqual(response.status_code, 200)
-            self.assertEqual("{}", response.content.decode("UTF-8"))
-        with self.settings(DOH_SERVER={"RESOLVER": "8.8.8.8", "AUTHORITY": ""}):
-            response = self.client.get(
-                reverse("doh_request"),
-                {"name": "not_works", "type": "A"},
-                HTTP_ACCEPT=DOH_JSON_CONTENT_TYPE,
-            )
-            self.assertEqual(response.status_code, 200)
-            self.assertEqual("{}", response.content.decode("UTF-8"))
+        for resolver in ["internal", "8.8.8.8"]:
+            with self.subTest(resolver=resolver):
+                with self.settings(DOH_SERVER={"RESOLVER": resolver, "AUTHORITY": ""}):
+                    response = self.client.get(
+                        reverse("doh_request"),
+                        {"name": "not_works", "type": "A"},
+                        HTTP_ACCEPT=DOH_JSON_CONTENT_TYPE,
+                    )
+                    self.assertEqual(response.status_code, 200)
+                    self.assertEqual("{}", response.content.decode("UTF-8"))
