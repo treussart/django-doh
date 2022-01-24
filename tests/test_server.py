@@ -181,7 +181,6 @@ class GetTestCaseDNSJson(TestCase):
                 HTTP_ACCEPT=DOH_JSON_CONTENT_TYPE,
             )
             self.assertEqual(response.status_code, 200)
-            print(response.content.decode("UTF-8"))
             self.assertEqual("{}", response.content.decode("UTF-8"))
         with self.settings(DOH_SERVER={"RESOLVER": "8.8.8.8", "AUTHORITY": ""}):
             response = self.client.get(

@@ -49,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'django_doh.urls'
+ROOT_URLCONF = 'doh_server.urls'
 
 TEMPLATES = [
     {
@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'django_doh.wsgi.application'
+WSGI_APPLICATION = 'django.wsgi.application'
 
 
 # Database
@@ -124,5 +124,16 @@ DOH_SERVER = {
     "RESOLVER": "internal",
     # "RESOLVER": "8.8.8.8",
     "AUTHORITY": "",
-    "LOGGER_LEVEL": "DEBUG",
+    "LOGGER_LEVEL": "ERROR",
+}
+
+# Logging
+
+LOGGING = {
+    "version": 1,
+    "handlers": {
+        "console": {"class": "logging.StreamHandler"},
+        "null": {"class": "logging.NullHandler"},
+    },
+    "loggers": {"": {"level": "DEBUG", "handlers": ["null"]},},
 }
