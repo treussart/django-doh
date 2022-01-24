@@ -111,7 +111,6 @@ class GetTestCaseDNSMessage(TestCase):
                     )
                     self.assertEqual(response.status_code, 200)
                     message_content = message.from_wire(response.content)
-                    self.assertTrue(message_content.first)
                     self.assertEqual(message_content.rcode(), 0)
                     self.assertIn("treussart.com.", str(message_content.answer[0]))
                     self.assertIn(" IN A ", str(message_content.answer[0]))
