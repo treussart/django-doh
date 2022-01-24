@@ -36,7 +36,7 @@ setup(
     ],
     install_requires=[
         'django',
-        'dnspython',
+        'dnspython<2',
     ],
-    python_requires='>=3.7',
+    python_requires='>=3.6',
 )

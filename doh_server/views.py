@@ -17,13 +17,13 @@ from doh_server.utils import (
     create_http_json_response,
 )
 
-resolver_dns = DNSResolverClient(settings.DOH_SERVER["RESOLVER"])
 logger = configure_logger("doh-server", level=settings.DOH_SERVER["LOGGER_LEVEL"])
 
 
 @csrf_exempt
 @require_http_methods(["GET", "POST"])
 def doh_request(request):
+    resolver_dns = DNSResolverClient(settings.DOH_SERVER["RESOLVER"])
     accept_header = request.headers.get("Accept")
     message = get_name_and_type_from_dns_question(request)
     if not message:
