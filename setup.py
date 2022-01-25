@@ -14,12 +14,13 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-doh',
-    version='0.1.0',
+    version='0.1.1',
     packages=find_packages(),
     include_package_data=True,
     license='BSD License',
     description='A simple Django app to serve DOH.',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     url='https://github.com/treussart/django-doh',
     author='Matthieu Treussart',
     author_email='matthieu@treussart.com',
